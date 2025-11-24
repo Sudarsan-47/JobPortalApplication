@@ -1,5 +1,6 @@
 package com.luv2code.jobportal.config;
 
+import com.luv2code.jobportal.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,21 +12,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.luv2code.jobportal.services.CustomUserDetailsService;
+import javax.swing.*;
 
 @Configuration
 public class WebSecurityConfig {
-	
-	
-	private final CustomUserDetailsService customUserDetailsService;
-	 private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
-	    
-	    @Autowired
-	    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService, CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler) {
-	        this.customUserDetailsService = customUserDetailsService;
-	        this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
-	    }
-	
+
+    private final CustomUserDetailsService customUserDetailsService;
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    @Autowired
+    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService, CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler) {
+        this.customUserDetailsService = customUserDetailsService;
+        this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
+    }
+
     private final String[] publicUrl = {"/",
             "/global-search/**",
             "/register",
@@ -44,6 +43,8 @@ public class WebSecurityConfig {
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+        http.authenticationProvider(authenticationProvider());
+
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers(publicUrl).permitAll();
             auth.anyRequest().authenticated();
@@ -59,7 +60,7 @@ public class WebSecurityConfig {
 
         return http.build();
     }
-    
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
 
