@@ -4,8 +4,8 @@ FROM maven:3.8.6-eclipse-temurin-17 AS build
 WORKDIR /workspace
 
 # Copy pom + source code
-COPY pom.xml .
-COPY src ./src
+COPY jobportal/pom.xml .
+COPY jobportal/src ./src
 
 # Build your Spring Boot app (skip tests to speed up)
 RUN mvn clean package -DskipTests
