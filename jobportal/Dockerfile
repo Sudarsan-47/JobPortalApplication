@@ -1,5 +1,5 @@
 # 1) Build stage: use Maven + JDK to build the jar
-FROM maven:3.8.6-eclipse-temurin-17 AS build
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 
 WORKDIR /workspace
 
@@ -11,7 +11,7 @@ COPY jobportal/src ./src
 RUN mvn clean package -DskipTests
 
 # 2) Run stage: use a lighter JDK image
-FROM eclipse-temurin:17-jdk-alpine
+FROM eclipse-temurin:21-jdk-alpine
 
 WORKDIR /app
 
